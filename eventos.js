@@ -1,7 +1,6 @@
 let nameInput = document.querySelector('#name');
 let emailInput = document.querySelector('#email');
 let phoneInput = document.querySelector('#phone');
-let passwordInput = document.querySelector('#password');
 
 nameInput.addEventListener('focusout', () => {
 
@@ -39,51 +38,43 @@ phoneInput.addEventListener('focusout', () => {
 
 })
 
-passwordInput.addEventListener('focusout', () => {
-    
-    if(passwordInput.value.trim() === "" || passwordInput.value.length < 8){
-        passwordInput.classList.add('is-invalid');
-        passwordInput.classList.remove('is-valid');
-    } else {
-        passwordInput.classList.remove('is-invalid');
-        passwordInput.classList.add('is-valid');
-    }
+function clearInputs() {
 
-})
+    nameInput.value = '';
+    emailInput.value = '';
+    phoneInput.value = '';
+
+    nameInput.classList.remove('is-valid');
+    emailInput.classList.remove('is-valid');
+    phoneInput.classList.remove('is-valid');
+
+}
+
+let namesInTable = document.querySelectorAll('.inputName');
+let elementTable = document.querySelector('.data-table');
 
 document.querySelector('#form').addEventListener('submit', () => {
     
     event.preventDefault();
 
-    let elementTable = document.querySelector('.data-table');
+    let alertError = document.querySelector('#alert-error');
+    let alertSuccess = document.querySelector('#alert-success');
     
+
     if (
         nameInput.classList.value === "form-control is-invalid" || nameInput.value === "" ||
         emailInput.classList.value === "form-control is-invalid" || emailInput.value === "" ||
         phoneInput.classList.value === "form-control is-invalid" || phoneInput.value === "" 
-        //passwordInput.classList.value === "form-control is-invalid" || passwordInput.value === "" 
     ) {
-        alert('Ta faltando coisa!');
-    } else if (elementTable.children.length > 0) {
-        let rowsTable = document.querySelectorAll('.inputName');
 
-        rowsTable.forEach(element => {
-            
-            if (element.innerHTML.toUpperCase() === nameInput.value.toUpperCase()) {
-                alert('Já tem vet'); 
-            } else {
-                elementTable.innerHTML += 
-                `
-                <tr>
-                    <td class="inputName">${nameInput.value}</td>
-                    <td class="">${emailInput.value}</td>
-                    <td class="">${phoneInput.value}</td>
-                </tr>
-                `
-            }
-        })
+        alertError.classList.remove('d-none');
+
+        setTimeout(() => {
+            alertError.classList.add('d-none');
+        }, 2000);
         
     } else {
+
         elementTable.innerHTML += 
         `
         <tr>
@@ -92,5 +83,14 @@ document.querySelector('#form').addEventListener('submit', () => {
             <td class="">${phoneInput.value}</td>
         </tr>
         `
+
+        alertSuccess.classList.remove('d-none');
+
+        setTimeout(() => {
+            alertSuccess.classList.add('d-none');
+        }, 2000);
+
+        clearInputs();
+
     }
 })
